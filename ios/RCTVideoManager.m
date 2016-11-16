@@ -14,28 +14,6 @@ RCT_EXPORT_MODULE();
   return [[RCTVideo alloc] initWithEventDispatcher:self.bridge.eventDispatcher];
 }
 
-/* Should support: onLoadStart, onLoad, and onError to stay consistent with Image */
-
-- (NSArray *)customDirectEventTypes
-{
-  return @[
-    @"onVideoLoadStart",
-    @"onVideoLoad",
-    @"onVideoError",
-    @"onVideoProgress",
-    @"onVideoSeek",
-    @"onVideoEnd",
-    @"onVideoFullscreenPlayerWillPresent",
-    @"onVideoFullscreenPlayerDidPresent",
-    @"onVideoFullscreenPlayerWillDismiss",
-    @"onVideoFullscreenPlayerDidDismiss",
-    @"onReadyForDisplay",
-    @"onPlaybackStalled",
-    @"onPlaybackResume",
-    @"onPlaybackRateChange"
-  ];
-}
-
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
@@ -55,6 +33,8 @@ RCT_EXPORT_VIEW_PROPERTY(seek, float);
 RCT_EXPORT_VIEW_PROPERTY(currentTime, float);
 RCT_EXPORT_VIEW_PROPERTY(fullscreen, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(progressUpdateInterval, float);
+
+/* Should support: onLoadStart, onLoad, and onError to stay consistent with Image */
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoadStart, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoLoad, RCTBubblingEventBlock);
 RCT_EXPORT_VIEW_PROPERTY(onVideoError, RCTBubblingEventBlock);
