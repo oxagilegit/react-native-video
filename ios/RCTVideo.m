@@ -274,15 +274,16 @@ static NSString *const playbackRate = @"rate";
                                                         queue:NULL
                                                    usingBlock:^(CMTime time) { [weakSelf sendProgressUpdate]; }
                    ];
-    if (!self.onVideoLoadStart) {
-        return;
-    }
-  self.onVideoLoadStart(@{@"src": @{
-                            @"uri": [source objectForKey:@"uri"],
-                            @"type": [source objectForKey:@"type"],
-                            @"isNetwork": [NSNumber numberWithBool:(bool)[source objectForKey:@"isNetwork"]]},
+
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //Perform on next run loop, otherwise onVideoLoadStart is nil
+    self.onVideoLoadStart(@{@"src": @{
+                                @"uri": [source objectForKey:@"uri"],
+                                @"type": [source objectForKey:@"type"],
+                                @"isNetwork": [NSNumber numberWithBool:(bool)[source objectForKey:@"isNetwork"]]},
                             @"target": self.reactTag
-                          });
+                            });
+  });
 }
 
 - (AVPlayerItem*)playerItemForSource:(NSDictionary *)source
