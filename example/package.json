@@ -8,6 +8,20 @@
   "dependencies": {
     "react": "15.4.1",
     "react-native": "~0.38.0",
-    "@drivetribe/react-native-video": "file:../",
+    "@drivetribe/react-native-video": "file:../"
   },
+  "devDependencies": {
+    "babel-eslint": "7.1.1",
+    "eslint-config-airbnb": "13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "6.8.0",
+    "eslint": "3.11.1",
+    "flow-bin": "~0.33.0"
+  },
+  "scripts": {
+    "lint": "eslint *.js",
+    "flow": "flow",
+    "check": "npm run lint && npm run flow"
+  }
 }

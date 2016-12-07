@@ -15,17 +15,27 @@
     "type": "git",
     "url": "git@github.com:drivetribe/react-native-video.git"
   },
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-native": "^0.38.0"
+  },
   "devDependencies": {
-    "jest-cli": "0.2.1",
-    "eslint": "1.10.3",
-    "babel-eslint": "5.0.0-beta8",
-    "eslint-plugin-react": "3.16.1",
-    "eslint-config-airbnb": "4.0.0"
+    "babel-eslint": "7.1.1",
+    "eslint-config-airbnb": "13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "6.8.0",
+    "eslint": "3.11.1",
+    "flow-bin": "~0.33.0"
   },
   "dependencies": {
-    "keymirror": "0.1.1"
+    "keymirror": "0.1.1",
+    "react": "15.4.1",
+    "react-native": "0.38.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/eslint *.js"
+    "lint": "eslint *.js",
+    "flow": "flow",
+    "check": "npm run lint && npm run flow"
   }
 }

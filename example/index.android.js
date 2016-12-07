@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 
-import Video from 'react-native-video';
+import Video from '@drivetribe/react-native-video';
 
 class VideoPlayer extends Component {
 
@@ -21,8 +21,6 @@ class VideoPlayer extends Component {
     paused: true,
   };
 
-  video: Video;
-
   onLoad = (data) => {
     this.setState({ duration: data.duration });
   };
@@ -32,30 +30,32 @@ class VideoPlayer extends Component {
   };
 
   onEnd = () => {
-    this.setState({ paused: true })
-    this.video.seek(0)
+    this.setState({ paused: true });
+    this.video.seek(0);
   };
 
   onAudioBecomingNoisy = () => {
-    this.setState({ paused: true })
+    this.setState({ paused: true });
   };
 
   onAudioFocusChanged = (event: { hasAudioFocus: boolean }) => {
-    this.setState({ paused: !event.hasAudioFocus })
+    this.setState({ paused: !event.hasAudioFocus });
   };
 
-  getCurrentTimePercentage() {
+  getCurrentTimePercentage = () => {
     if (this.state.currentTime > 0) {
       return parseFloat(this.state.currentTime) / parseFloat(this.state.duration);
     }
     return 0;
-  };
+  }
+
+  video: Video;
 
   renderRateControl(rate) {
     const isSelected = (this.state.rate === rate);
 
     return (
-      <TouchableOpacity onPress={() => { this.setState({ rate }) }}>
+      <TouchableOpacity onPress={() => { this.setState({ rate }); }}>
         <Text style={[styles.controlOption, { fontWeight: isSelected ? 'bold' : 'normal' }]}>
           {rate}x
         </Text>
@@ -67,24 +67,24 @@ class VideoPlayer extends Component {
     const isSelected = (this.state.resizeMode === resizeMode);
 
     return (
-      <TouchableOpacity onPress={() => { this.setState({ resizeMode }) }}>
+      <TouchableOpacity onPress={() => { this.setState({ resizeMode }); }}>
         <Text style={[styles.controlOption, { fontWeight: isSelected ? 'bold' : 'normal' }]}>
           {resizeMode}
         </Text>
       </TouchableOpacity>
-    )
+    );
   }
 
   renderVolumeControl(volume) {
     const isSelected = (this.state.volume === volume);
 
     return (
-      <TouchableOpacity onPress={() => { this.setState({ volume }) }}>
+      <TouchableOpacity onPress={() => { this.setState({ volume }); }}>
         <Text style={[styles.controlOption, { fontWeight: isSelected ? 'bold' : 'normal' }]}>
           {volume * 100}%
         </Text>
       </TouchableOpacity>
-    )
+    );
   }
 
   render() {
@@ -101,7 +101,7 @@ class VideoPlayer extends Component {
           onPress={() => this.setState({ paused: !this.state.paused })}
         >
           <Video
-            ref={(ref: Video) => { this.video = ref }}
+            ref={(ref: Video) => { this.video = ref; }}
             source={{ uri: 'asset:///broadchurch.mp4' }}
             style={styles.fullScreen}
             rate={this.state.rate}

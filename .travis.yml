@@ -1,0 +1,80 @@
+env:
+  global:
+  - NODE_VERSION=7.1.0
+  - NPM_VERSION=3.10.9
+
+matrix:
+  include:
+  - language: node_js
+    node_js:
+    - 7.1.0
+    env:
+    - CXX=g++-4.8
+    - TEST_TYPE=js
+    cache:
+      directories:
+      - "$HOME/.npm"
+      - node_modules
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-4.8
+  - os: linux
+    env:
+    - TEST_TYPE=android
+    - GRADLE_OPTS="-Xms2048m -Xmx2048m"
+    - CXX=g++-4.8
+    - REACT_NATIVE_MAX_WORKERS=2
+    language: android
+    jdk: oraclejdk8
+    android:
+      components:
+      - tools # to get the new `repository-11.xml`
+      - tools # to install Android SDK tools 25.1.x
+      - platform-tools
+      - build-tools-25.0.1
+      - android-25
+      - extra-android-m2repository
+      licenses:
+      - android-sdk-preview-license-.+
+      - android-sdk-license-.+
+      - google-gdk-license-.+
+    before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+    cache:
+      directories:
+      - "$HOME/.gradle/caches/"
+      - "$HOME/.gradle/wrapper/"
+      - "$HOME/.npm"
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-4.8
+        - curl
+
+before_install:
+- if [[ $TEST_TYPE == 'android' ]]; then rm -rf ~/.nvm
+  && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout
+  `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $NODE_VERSION
+  && nvm use --delete-prefix $NODE_VERSION; fi
+- ./scripts/configure-node.sh
+
+install:
+- travis_wait npm install
+- cd example && travis_wait npm install
+
+script:
+- if [[ $TEST_TYPE == 'js' ]]; then npm run check; fi
+- if [[ $TEST_TYPE == 'js' ]]; then cd example && npm run check && cd ..; fi
+- if [[ $TEST_TYPE == 'android' ]]; then ./example/android/gradlew build -p example/android fi
+
+branches:
+  only:
+  - master
+notifications:
+  email: false

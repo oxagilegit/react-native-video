@@ -200,7 +200,9 @@ export default class Video extends Component {
 
 Video.propTypes = {
   /* Native only */
-  src: PropTypes.object,
+  src: {
+    uri: PropTypes.string,
+  },
   seek: PropTypes.number,
   fullscreen: PropTypes.bool,
   onVideoLoadStart: PropTypes.func,
@@ -217,10 +219,10 @@ Video.propTypes = {
   /* Wrapper component */
   source: PropTypes.oneOfType([
     PropTypes.shape({
-      uri: PropTypes.string
+      uri: PropTypes.string,
     }),
     // Opaque type returned by require('./video.mp4')
-    PropTypes.number
+    PropTypes.number,
   ]),
   resizeMode: PropTypes.string,
   repeat: PropTypes.bool,
