@@ -75,6 +75,6 @@ script:
 
 branches:
   only:
-  - master
+  - drivetribe
 notifications:
   email: false
