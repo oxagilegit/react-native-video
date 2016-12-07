@@ -1,5 +1,14 @@
-import React, {Component, PropTypes} from 'react';
-import {StyleSheet, requireNativeComponent, NativeModules, View} from 'react-native';
+import React, {
+  Component,
+  PropTypes,
+} from 'react';
+import {
+  NativeModules,
+  Platform,
+  requireNativeComponent,
+  StyleSheet,
+  View,
+} from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import VideoResizeMode from './VideoResizeMode.js';
 
@@ -115,6 +124,18 @@ export default class Video extends Component {
     }
   };
 
+  _onAudioBecomingNoisy = () => {
+    if (this.props.onAudioBecomingNoisy) {
+      this.props.onAudioBecomingNoisy();
+    }
+  };
+
+  _onAudioFocusChanged = (event) => {
+    if (this.props.onAudioFocusChanged) {
+      this.props.onAudioFocusChanged(event.nativeEvent);
+    }
+  };
+
   render() {
     const resizeMode = this.props.resizeMode;
     const source = resolveAssetSource(this.props.source) || {};
@@ -146,7 +167,7 @@ export default class Video extends Component {
         uri,
         isNetwork,
         isAsset,
-        type: source.type || 'mp4',
+        type: source.type || Platform.select({ ios: 'mp4', android: undefined }),
         mainVer: source.mainVer || 0,
         patchVer: source.patchVer || 0,
       },
@@ -164,6 +185,8 @@ export default class Video extends Component {
       onPlaybackStalled: this._onPlaybackStalled,
       onPlaybackResume: this._onPlaybackResume,
       onPlaybackRateChange: this._onPlaybackRateChange,
+      onAudioFocusChanged: this._onAudioFocusChanged,
+      onAudioBecomingNoisy: this._onAudioBecomingNoisy,
     });
 
     return (
@@ -224,6 +247,8 @@ Video.propTypes = {
   onPlaybackStalled: PropTypes.func,
   onPlaybackResume: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
+  onAudioFocusChanged: PropTypes.func,
+  onAudioBecomingNoisy: PropTypes.func,
 
   /* Required by react-native */
   scaleX: PropTypes.number,
