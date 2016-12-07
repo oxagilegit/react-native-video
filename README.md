@@ -1,4 +1,4 @@
-## react-native-video
+## react-native-video [![Build Status](https://travis-ci.org/drivetribe/react-native-video.svg?branch=master)](https://travis-ci.org/drivetribe/react-native-video)
 
 A `<Video>` component for react-native, based on [react-native-video](https://github.com/react-native-community/react-native-video).
 
