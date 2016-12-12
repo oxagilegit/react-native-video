@@ -18,6 +18,7 @@ class VideoPlayer extends Component {
     super(props);
     this.onLoad = this.onLoad.bind(this);
     this.onProgress = this.onProgress.bind(this);
+    this.onBuffer = this.onBuffer.bind(this);
   }
   state = {
     rate: 1,
@@ -29,6 +30,7 @@ class VideoPlayer extends Component {
     controls: false,
     paused: true,
     skin: 'custom',
+    isBuffering: false,
   };
 
   onLoad(data) {
@@ -37,6 +39,10 @@ class VideoPlayer extends Component {
 
   onProgress(data) {
     this.setState({ currentTime: data.currentTime });
+  }
+
+  onBuffer({ isBuffering }: { isBuffering: boolean }) {
+    this.setState({ isBuffering });
   }
 
   getCurrentTimePercentage() {
@@ -112,7 +118,7 @@ class VideoPlayer extends Component {
           onPress={() => { this.setState({ paused: !this.state.paused }); }}
         >
           <Video
-            source={{ uri: 'broadchurch' }}
+            source={{ uri: 'https://d2jyv85kc4p0re.cloudfront.net/LuopotinS9yC8STFLjlaAA/manifest.m3u8' }}
             style={styles.fullScreen}
             rate={this.state.rate}
             paused={this.state.paused}
@@ -120,6 +126,7 @@ class VideoPlayer extends Component {
             muted={this.state.muted}
             resizeMode={this.state.resizeMode}
             onLoad={this.onLoad}
+            onBuffer={this.onBuffer}
             onProgress={this.onProgress}
             onEnd={() => { AlertIOS.alert('Done!'); }}
             repeat
@@ -179,6 +186,7 @@ class VideoPlayer extends Component {
             muted={this.state.muted}
             resizeMode={this.state.resizeMode}
             onLoad={this.onLoad}
+            onBuffer={this.onBuffer}
             onProgress={this.onProgress}
             onEnd={() => { AlertIOS.alert('Done!'); }}
             repeat
