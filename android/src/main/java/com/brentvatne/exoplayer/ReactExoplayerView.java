@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
@@ -38,8 +39,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelections;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Util;
@@ -52,7 +52,6 @@ import java.net.CookiePolicy;
 class ReactExoplayerView extends FrameLayout implements
         LifecycleEventListener,
         ExoPlayer.EventListener,
-        TrackSelector.EventListener<MappingTrackSelector.MappedTrackInfo>,
         BecomingNoisyListener,
         AudioManager.OnAudioFocusChangeListener {
 
@@ -189,10 +188,8 @@ class ReactExoplayerView extends FrameLayout implements
 
     private void initializePlayer() {
         if (player == null) {
-            TrackSelection.Factory videoTrackSelectionFactory =
-                    new AdaptiveVideoTrackSelection.Factory(BANDWIDTH_METER);
-            trackSelector = new DefaultTrackSelector(mainHandler, videoTrackSelectionFactory);
-            trackSelector.addListener(this);
+            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(BANDWIDTH_METER);
+            trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
             player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, new DefaultLoadControl());
             player.addListener(this);
             exoPlayerView.setPlayer(player);
@@ -246,7 +243,7 @@ class ReactExoplayerView extends FrameLayout implements
             playerWindow = player.getCurrentWindowIndex();
             playerPosition = C.TIME_UNSET;
             Timeline timeline = player.getCurrentTimeline();
-            if (timeline != null && timeline.getWindow(playerWindow, window).isSeekable) {
+            if (!timeline.isEmpty() && timeline.getWindow(playerWindow, window).isSeekable) {
                 playerPosition = player.getCurrentPosition();
             }
             player.release();
@@ -443,8 +440,13 @@ class ReactExoplayerView extends FrameLayout implements
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
-        isTimelineStatic = timeline != null && timeline.getWindowCount() > 0
+        isTimelineStatic = !timeline.isEmpty()
                 && !timeline.getWindow(timeline.getWindowCount() - 1, window).isDynamic;
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+        // Do Nothing.
     }
 
     @Override
@@ -476,20 +478,6 @@ class ReactExoplayerView extends FrameLayout implements
             eventEmitter.error(errorString, e);
         }
         playerNeedsSource = true;
-    }
-
-    // MappingTrackSelector.EventListener implementation
-
-    @Override
-    public void onTrackSelectionsChanged(TrackSelections<? extends MappingTrackSelector.MappedTrackInfo> trackSelections) {
-        MappingTrackSelector.MappedTrackInfo trackInfo = trackSelections.info;
-        if (trackInfo.hasOnlyUnplayableTracks(C.TRACK_TYPE_VIDEO)) {
-            // Media includes video tracks, but none are playable by this device
-
-        }
-        if (trackInfo.hasOnlyUnplayableTracks(C.TRACK_TYPE_AUDIO)) {
-            // Media includes audio tracks, but none are playable by this device
-        }
     }
 
     // ReactExoplayerViewManager public api
