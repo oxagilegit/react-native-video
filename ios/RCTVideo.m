@@ -535,7 +535,7 @@ static NSString *const timedMetadata = @"timedMetadata";
     CMTime cmSeekTime = CMTimeMakeWithSeconds(seekTime, timeScale);
     CMTime current = item.currentTime;
     // TODO figure out a good tolerance level
-    CMTime tolerance = CMTimeMake(1000, timeScale);
+    CMTime tolerance = CMTimeMake(0, timeScale);
 
     if (CMTimeCompare(current, cmSeekTime) != 0) {
       [_player seekToTime:cmSeekTime toleranceBefore:tolerance toleranceAfter:tolerance completionHandler:^(BOOL finished) {
