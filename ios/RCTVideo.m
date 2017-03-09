@@ -1,7 +1,5 @@
 #if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
-#elif __has_include(<RCTConvert.h>)
-#import <RCTConvert.h>
 #elif __has_include("RCTConvert.h")
 #import "RCTConvert.h"
 #elif __has_include("React/RCTConvert.h")
@@ -12,8 +10,6 @@
 
 #if __has_include(<React/RCTBridgeModule.h>)
 #import <React/RCTBridgeModule.h>
-#elif __has_include(<RCTBridgeModule.h>)
-#import <RCTBridgeModule.h>
 #elif __has_include("RCTBridgeModule.h")
 #import "RCTBridgeModule.h"
 #elif __has_include("React/RCTBridgeModule.h")
@@ -22,8 +18,6 @@
 
 #if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>
-#elif __has_include(<RCTEventDispatcher.h>)
-#import <RCTEventDispatcher.h>
 #elif __has_include("RCTEventDispatcher.h")
 #import "RCTEventDispatcher.h"
 #elif __has_include("React/RCTEventDispatcher.h")
@@ -32,8 +26,6 @@
 
 #if __has_include(<React/UIView+React.h>)
 #import <React/UIView+React.h>
-#elif __has_include(<UIView+React.h>)
-#import <UIView+React.h>
 #elif __has_include("UIView+React.h")
 #import "UIView+React.h"
 #elif __has_include("React/UIView+React.h")
