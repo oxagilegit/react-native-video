@@ -1,8 +1,44 @@
+#if __has_include(<React/RCTConvert.h>)
 #import <React/RCTConvert.h>
+#elif __has_include(<RCTConvert.h>)
+#import <RCTConvert.h>
+#elif __has_include("RCTConvert.h")
+#import "RCTConvert.h"
+#elif __has_include("React/RCTConvert.h")
+#import "React/RCTConvert.h"   // Required when used as a Pod in a Swift project
+#endif
+
 #import "RCTVideo.h"
+
+#if __has_include(<React/RCTBridgeModule.h>)
 #import <React/RCTBridgeModule.h>
+#elif __has_include(<RCTBridgeModule.h>)
+#import <RCTBridgeModule.h>
+#elif __has_include("RCTBridgeModule.h")
+#import "RCTBridgeModule.h"
+#elif __has_include("React/RCTBridgeModule.h")
+#import "React/RCTBridgeModule.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>
+#elif __has_include(<RCTEventDispatcher.h>)
+#import <RCTEventDispatcher.h>
+#elif __has_include("RCTEventDispatcher.h")
+#import "RCTEventDispatcher.h"
+#elif __has_include("React/RCTEventDispatcher.h")
+#import "React/RCTEventDispatcher.h"   // Required when used as a Pod in a Swift project
+#endif
+
+#if __has_include(<React/UIView+React.h>)
 #import <React/UIView+React.h>
+#elif __has_include(<UIView+React.h>)
+#import <UIView+React.h>
+#elif __has_include("UIView+React.h")
+#import "UIView+React.h"
+#elif __has_include("React/UIView+React.h")
+#import "React/UIView+React.h"   // Required when used as a Pod in a Swift project
+#endif
 
 static NSString *const statusKeyPath = @"status";
 static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp";
@@ -118,7 +154,7 @@ static NSString *const timedMetadata = @"timedMetadata";
     {
         return [playerItem seekableTimeRanges].firstObject.CMTimeRangeValue;
     }
-    
+
     return (kCMTimeRangeZero);
 }
 
@@ -325,23 +361,23 @@ static NSString *const timedMetadata = @"timedMetadata";
     if ([keyPath isEqualToString: timedMetadata])
     {
 
-        
+
         NSArray<AVMetadataItem *> *items = [change objectForKey:@"new"];
         if (items && ![items isEqual:[NSNull null]] && items.count > 0) {
-            
+
             NSMutableArray *array = [NSMutableArray new];
             for (AVMetadataItem *item in items) {
-                
+
                 NSString *value = item.value;
                 NSString *identifier = item.identifier;
-                
+
                 if (![value isEqual: [NSNull null]]) {
                     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjects:@[value, identifier] forKeys:@[@"value", @"identifier"]];
-                    
+
                     [array addObject:dictionary];
                 }
             }
-            
+
             self.onTimedMetadata(@{
                                    @"target": self.reactTag,
                                    @"metadata": array
@@ -376,7 +412,7 @@ static NSString *const timedMetadata = @"timedMetadata";
           } else
             orientation = @"portrait";
         }
-          
+
       if(self.onVideoLoad) {
           self.onVideoLoad(@{@"duration": [NSNumber numberWithFloat:duration],
                              @"currentTime": [NSNumber numberWithFloat:CMTimeGetSeconds(_playerItem.currentTime)],
