@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.platform     = :ios, "7.0"
 
-  s.source       = { :git => "https://github.com/balmasich/react-native-video.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/balmasich/react-native-video.git", :tag => "#balmasich" }
 
   s.source_files  = "ios/*.{h,m}"
 
