@@ -38,6 +38,7 @@ static NSString *const playbackBufferEmptyKeyPath = @"playbackBufferEmpty";
 static NSString *const readyForDisplayKeyPath = @"readyForDisplay";
 static NSString *const playbackRate = @"rate";
 static NSString *const timedMetadata = @"timedMetadata";
+static NSString *const externalPlaybackActive = @"externalPlaybackActive";
 
 @implementation RCTVideo
 {
@@ -168,6 +169,7 @@ static NSString *const timedMetadata = @"timedMetadata";
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self removePlayerItemObservers];
   [_player removeObserver:self forKeyPath:playbackRate context:nil];
+  [_player removeObserver:self forKeyPath:externalPlaybackActive context:nil];
 }
 
 #pragma mark - App lifecycle handlers
@@ -289,6 +291,7 @@ static NSString *const timedMetadata = @"timedMetadata";
 
   if (_playbackRateObserverRegistered) {
     [_player removeObserver:self forKeyPath:playbackRate context:nil];
+    [_player removeObserver:self forKeyPath:externalPlaybackActive context:nil];
     _playbackRateObserverRegistered = NO;
   }
 
@@ -296,6 +299,8 @@ static NSString *const timedMetadata = @"timedMetadata";
   _player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
 
   [_player addObserver:self forKeyPath:playbackRate options:0 context:nil];
+  [_player addObserver:self forKeyPath:externalPlaybackActive options:0 context:nil];
+
   _playbackRateObserverRegistered = YES;
 
   const Float64 progressUpdateIntervalMS = _progressUpdateInterval / 1000;
@@ -459,6 +464,10 @@ static NSString *const timedMetadata = @"timedMetadata";
                                           @"target": self.reactTag});
               }
               _playbackStalled = NO;
+          }
+      } else if ([keyPath isEqualToString:externalPlaybackActive]) {
+          if (self.onExternalOutputChange) {
+              self.onExternalOutputChange(@{@"externalOutputActive": @(_player.externalPlaybackActive)});
           }
       }
   } else {
@@ -822,6 +831,7 @@ static NSString *const timedMetadata = @"timedMetadata";
   [_player pause];
   if (_playbackRateObserverRegistered) {
     [_player removeObserver:self forKeyPath:playbackRate context:nil];
+    [_player removeObserver:self forKeyPath:externalPlaybackActive context:nil];
     _playbackRateObserverRegistered = NO;
   }
   _player = nil;
@@ -838,6 +848,23 @@ static NSString *const timedMetadata = @"timedMetadata";
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
   [super removeFromSuperview];
+}
+
+#pragma mark - Airplay support
+
+- (BOOL)isExternalOutputActive {
+    return _player.isExternalPlaybackActive;
+}
+
+- (NSString *)externalOutputDeviceName {
+    AVAudioSession* audioSession = [AVAudioSession sharedInstance];
+    AVAudioSessionRouteDescription* currentRoute = audioSession.currentRoute;
+    for (AVAudioSessionPortDescription* outputPort in currentRoute.outputs){
+        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay])
+            return outputPort.portName;
+    }
+    
+    return nil;
 }
 
 @end
