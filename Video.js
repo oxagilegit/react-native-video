@@ -1,6 +1,13 @@
 import React, {Component, PropTypes} from 'react';
-import {StyleSheet, requireNativeComponent, NativeModules, View, Image} from 'react-native';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import {
+  StyleSheet,
+  requireNativeComponent,
+  NativeModules,
+  View,
+  Image,
+} from 'react-native';
+import resolveAssetSource
+  from 'react-native/Libraries/Image/resolveAssetSource';
 import VideoResizeMode from './VideoResizeMode.js';
 
 const styles = StyleSheet.create({
@@ -10,7 +17,6 @@ const styles = StyleSheet.create({
 });
 
 export default class Video extends Component {
-
   constructor(props) {
     super(props);
 
@@ -23,47 +29,47 @@ export default class Video extends Component {
     this._root.setNativeProps(nativeProps);
   }
 
-  seek = (time) => {
-    this.setNativeProps({ seek: time });
+  seek = time => {
+    this.setNativeProps({seek: time});
   };
 
   presentFullscreenPlayer = () => {
-    this.setNativeProps({ fullscreen: true });
+    this.setNativeProps({fullscreen: true});
   };
 
   dismissFullscreenPlayer = () => {
-    this.setNativeProps({ fullscreen: false });
+    this.setNativeProps({fullscreen: false});
   };
 
-  _assignRoot = (component) => {
+  _assignRoot = component => {
     this._root = component;
   };
 
-  _onLoadStart = (event) => {
+  _onLoadStart = event => {
     if (this.props.onLoadStart) {
       this.props.onLoadStart(event.nativeEvent);
     }
   };
 
-  _onLoad = (event) => {
+  _onLoad = event => {
     if (this.props.onLoad) {
       this.props.onLoad(event.nativeEvent);
     }
   };
 
-  _onError = (event) => {
+  _onError = event => {
     if (this.props.onError) {
       this.props.onError(event.nativeEvent);
     }
   };
 
-  _onProgress = (event) => {
+  _onProgress = event => {
     if (this.props.onProgress) {
       this.props.onProgress(event.nativeEvent);
     }
   };
 
-  _onSeek = (event) => {
+  _onSeek = event => {
     if (this.state.showPoster) {
       this.setState({showPoster: false});
     }
@@ -73,62 +79,66 @@ export default class Video extends Component {
     }
   };
 
-  _onEnd = (event) => {
+  _onEnd = event => {
     if (this.props.onEnd) {
       this.props.onEnd(event.nativeEvent);
     }
   };
 
-  _onTimedMetadata = (event) => {
+  _onTimedMetadata = event => {
     if (this.props.onTimedMetadata) {
       this.props.onTimedMetadata(event.nativeEvent);
     }
   };
 
-  _onFullscreenPlayerWillPresent = (event) => {
+  _onFullscreenPlayerWillPresent = event => {
     if (this.props.onFullscreenPlayerWillPresent) {
       this.props.onFullscreenPlayerWillPresent(event.nativeEvent);
     }
   };
 
-  _onFullscreenPlayerDidPresent = (event) => {
+  _onFullscreenPlayerDidPresent = event => {
     if (this.props.onFullscreenPlayerDidPresent) {
       this.props.onFullscreenPlayerDidPresent(event.nativeEvent);
     }
   };
 
-  _onFullscreenPlayerWillDismiss = (event) => {
+  _onFullscreenPlayerWillDismiss = event => {
     if (this.props.onFullscreenPlayerWillDismiss) {
       this.props.onFullscreenPlayerWillDismiss(event.nativeEvent);
     }
   };
 
-  _onFullscreenPlayerDidDismiss = (event) => {
+  _onFullscreenPlayerDidDismiss = event => {
     if (this.props.onFullscreenPlayerDidDismiss) {
       this.props.onFullscreenPlayerDidDismiss(event.nativeEvent);
     }
   };
 
-  _onReadyForDisplay = (event) => {
+  _onReadyForDisplay = event => {
     if (this.props.onReadyForDisplay) {
       this.props.onReadyForDisplay(event.nativeEvent);
     }
   };
 
-  _onPlaybackStalled = (event) => {
+  _onPlaybackStalled = event => {
     if (this.props.onPlaybackStalled) {
       this.props.onPlaybackStalled(event.nativeEvent);
     }
   };
 
-  _onPlaybackResume = (event) => {
+  _onPlaybackResume = event => {
     if (this.props.onPlaybackResume) {
       this.props.onPlaybackResume(event.nativeEvent);
     }
   };
-
-  _onPlaybackRateChange = (event) => {
-    if (this.state.showPoster && (event.nativeEvent.playbackRate !== 0)) {
+  _onExternalOutputChange = event => {
+    if (this.props.onExternalOutputChange) {
+      this.props.onExternalOutputChange(event.nativeEvent);
+    }
+  };
+  _onPlaybackRateChange = event => {
+    if (this.state.showPoster && event.nativeEvent.playbackRate !== 0) {
       this.setState({showPoster: false});
     }
 
@@ -143,13 +153,13 @@ export default class Video extends Component {
     }
   };
 
-  _onAudioFocusChanged = (event) => {
+  _onAudioFocusChanged = event => {
     if (this.props.onAudioFocusChanged) {
       this.props.onAudioFocusChanged(event.nativeEvent);
     }
   };
 
-  _onBuffer = (event) => {
+  _onBuffer = event => {
     if (this.props.onBuffer) {
       this.props.onBuffer(event.nativeEvent);
     }
@@ -165,7 +175,8 @@ export default class Video extends Component {
     }
 
     const isNetwork = !!(uri && uri.match(/^https?:/));
-    const isAsset = !!(uri && uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
+    const isAsset = !!(uri &&
+      uri.match(/^(assets-library|file|content|ms-appx|ms-appdata):/));
 
     let nativeResizeMode;
     if (resizeMode === VideoResizeMode.stretch) {
@@ -205,6 +216,7 @@ export default class Video extends Component {
       onReadyForDisplay: this._onReadyForDisplay,
       onPlaybackStalled: this._onPlaybackStalled,
       onPlaybackResume: this._onPlaybackResume,
+      onExternalOutputChange: this._onExternalOutputChange,
       onPlaybackRateChange: this._onPlaybackRateChange,
       onAudioFocusChanged: this._onAudioFocusChanged,
       onAudioBecomingNoisy: this._onAudioBecomingNoisy,
@@ -222,24 +234,13 @@ export default class Video extends Component {
 
       return (
         <View style={nativeProps.style}>
-          <RCTVideo
-            ref={this._assignRoot}
-            {...nativeProps}
-          />
-          <Image
-            style={posterStyle}
-            source={{uri: this.props.poster}}
-          />
+          <RCTVideo ref={this._assignRoot} {...nativeProps} />
+          <Image style={posterStyle} source={{uri: this.props.poster}} />
         </View>
       );
     }
 
-    return (
-      <RCTVideo
-        ref={this._assignRoot}
-        {...nativeProps}
-      />
-    );
+    return <RCTVideo ref={this._assignRoot} {...nativeProps} />;
   }
 }
 
@@ -264,10 +265,10 @@ Video.propTypes = {
   /* Wrapper component */
   source: PropTypes.oneOfType([
     PropTypes.shape({
-      uri: PropTypes.string
+      uri: PropTypes.string,
     }),
     // Opaque type returned by require('./video.mp4')
-    PropTypes.number
+    PropTypes.number,
   ]),
   resizeMode: PropTypes.string,
   poster: PropTypes.string,
@@ -296,6 +297,7 @@ Video.propTypes = {
   onReadyForDisplay: PropTypes.func,
   onPlaybackStalled: PropTypes.func,
   onPlaybackResume: PropTypes.func,
+  onExternalOutputChange: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
   onAudioFocusChanged: PropTypes.func,
   onAudioBecomingNoisy: PropTypes.func,
