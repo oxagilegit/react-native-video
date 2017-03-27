@@ -471,7 +471,8 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
           }
       } else if ([keyPath isEqualToString:externalPlaybackActive]) {
           if (self.onExternalOutputChange) {
-              self.onExternalOutputChange(@{@"externalOutputActive": @(_player.isExternalPlaybackActive)});
+              self.onExternalOutputChange(@{@"externalOutputActive": @(_player.isExternalPlaybackActive),
+                                            @"externalOutputDeviceName": [self externalOutputDeviceName]});
           }
       }
   } else {
