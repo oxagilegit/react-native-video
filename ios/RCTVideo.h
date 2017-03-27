@@ -34,6 +34,21 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackResume;
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackRateChange;
 
+/**
+ Airplay connect/disconnect callback. Payload: //{"externalOutputActive": BOOL}
+ */
+@property (nonatomic, copy) RCTBubblingEventBlock onExternalOutputChange;
+
+/**
+ Airplay connection status.
+ */
+@property (nonatomic, assign, readonly) BOOL isExternalOutputActive;
+
+/**
+ Airplay device friendly name or nil in case of local playback.
+ */
+@property (nonatomic, strong, readonly) NSString *externalOutputDeviceName;
+
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher NS_DESIGNATED_INITIALIZER;
 
 - (AVPlayerViewController*)createPlayerViewController:(AVPlayer*)player withPlayerItem:(AVPlayerItem*)playerItem;
