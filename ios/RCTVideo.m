@@ -320,7 +320,9 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
                                         @"uri": uri ? uri : [NSNull null],
                                         @"type": type ? type : [NSNull null],
                                         @"isNetwork": [NSNumber numberWithBool:(bool)[source objectForKey:@"isNetwork"]]},
-                                        @"target": self.reactTag
+                                        @"target": self.reactTag,
+                                        @"externalOutputActive": @(_player.isExternalPlaybackActive),
+                                        @"externalOutputDeviceName": [self externalOutputDeviceName]
                                         });
     }
   });
@@ -424,7 +426,9 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
                                      @"height": height,
                                      @"orientation": orientation
                                      },
-                             @"target": self.reactTag});
+                             @"target": self.reactTag,
+                             @"externalOutputActive": @(_player.isExternalPlaybackActive),
+                             @"externalOutputDeviceName": [self externalOutputDeviceName]});
       }
 
 
@@ -467,7 +471,7 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
           }
       } else if ([keyPath isEqualToString:externalPlaybackActive]) {
           if (self.onExternalOutputChange) {
-              self.onExternalOutputChange(@{@"externalOutputActive": @(_player.externalPlaybackActive)});
+              self.onExternalOutputChange(@{@"externalOutputActive": @(_player.isExternalPlaybackActive)});
           }
       }
   } else {
@@ -864,7 +868,7 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
             return outputPort.portName;
     }
     
-    return nil;
+    return @"Unknown Device";
 }
 
 @end
