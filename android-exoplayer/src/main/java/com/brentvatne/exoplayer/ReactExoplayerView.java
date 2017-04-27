@@ -91,6 +91,7 @@ class ReactExoplayerView extends FrameLayout implements
     private String extension;
     private boolean repeat;
     private boolean disableFocus;
+    private float mProgressUpdateInterval = 250.0f;
     // \ End props
 
     // React
@@ -110,7 +111,7 @@ class ReactExoplayerView extends FrameLayout implements
                         long pos = player.getCurrentPosition();
                         eventEmitter.progressChanged(pos, player.getBufferedPercentage());
                         msg = obtainMessage(SHOW_PROGRESS);
-                        sendMessageDelayed(msg, 1000 - (pos % 1000));
+                        sendMessageDelayed(msg, Math.round(mProgressUpdateInterval));
                     }
                     break;
             }
@@ -531,6 +532,10 @@ class ReactExoplayerView extends FrameLayout implements
                 reloadSource();
             }
         }
+    }
+    
+    public void setProgressUpdateInterval(final float progressUpdateInterval) {
+        mProgressUpdateInterval = progressUpdateInterval;
     }
 
     public void setRawSrc(final Uri uri, final String extension) {
