@@ -604,8 +604,9 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     public void setRateModifier(float rate) {
-        // TODO: waiting on ExoPlayer implementation
-        // https://github.com/google/ExoPlayer/issues/26
+      if (player != null) {
+          player.setPlaybackParameters(new PlaybackParameters(rate, 1.0f));
+      }
     }
 
 
