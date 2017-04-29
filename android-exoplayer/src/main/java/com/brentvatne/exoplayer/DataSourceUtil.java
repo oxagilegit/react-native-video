@@ -1,13 +1,9 @@
 package com.brentvatne.exoplayer;
 
 import android.content.Context;
-
-import com.facebook.react.modules.network.OkHttpClientProvider;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 
 public class DataSourceUtil {
@@ -58,12 +54,6 @@ public class DataSourceUtil {
 
     private static DataSource.Factory buildDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
         Context appContext = context.getApplicationContext();
-        return new DefaultDataSourceFactory(appContext, bandwidthMeter,
-                buildHttpDataSourceFactory(appContext, bandwidthMeter));
+        return new DefaultDataSourceFactory(appContext,getUserAgent(appContext),bandwidthMeter);
     }
-
-    private static HttpDataSource.Factory buildHttpDataSourceFactory(Context context, DefaultBandwidthMeter bandwidthMeter) {
-        return new OkHttpDataSourceFactory(OkHttpClientProvider.getOkHttpClient(), getUserAgent(context), bandwidthMeter);
-    }
-
 }
