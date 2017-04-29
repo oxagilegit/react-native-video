@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -166,6 +167,11 @@ class ReactExoplayerView extends FrameLayout implements
         stopPlayback();
     }
 
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
     // LifecycleEventListener implementation
 
     @Override
@@ -194,7 +200,7 @@ class ReactExoplayerView extends FrameLayout implements
         if (player == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
             trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-            player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, new DefaultLoadControl());
+            player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
             player.addListener(this);
             player.setMetadataOutput(this);
             exoPlayerView.setPlayer(player);
@@ -533,7 +539,7 @@ class ReactExoplayerView extends FrameLayout implements
             }
         }
     }
-    
+
     public void setProgressUpdateInterval(final float progressUpdateInterval) {
         mProgressUpdateInterval = progressUpdateInterval;
     }
