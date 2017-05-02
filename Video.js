@@ -4,6 +4,7 @@ import {
   requireNativeComponent,
   NativeModules,
   View,
+  ViewPropTypes,
   Image,
 } from 'react-native';
 import resolveAssetSource
@@ -182,9 +183,11 @@ export default class Video extends Component {
     if (resizeMode === VideoResizeMode.stretch) {
       nativeResizeMode = NativeModules.UIManager.RCTVideo.Constants.ScaleToFill;
     } else if (resizeMode === VideoResizeMode.contain) {
-      nativeResizeMode = NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFit;
+      nativeResizeMode =
+        NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFit;
     } else if (resizeMode === VideoResizeMode.cover) {
-      nativeResizeMode = NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFill;
+      nativeResizeMode =
+        NativeModules.UIManager.RCTVideo.Constants.ScaleAspectFill;
     } else {
       nativeResizeMode = NativeModules.UIManager.RCTVideo.Constants.ScaleNone;
     }
@@ -308,7 +311,7 @@ Video.propTypes = {
   translateX: PropTypes.number,
   translateY: PropTypes.number,
   rotation: PropTypes.number,
-  ...View.propTypes,
+  ...ViewPropTypes,
 };
 
 const RCTVideo = requireNativeComponent('RCTVideo', Video, {
