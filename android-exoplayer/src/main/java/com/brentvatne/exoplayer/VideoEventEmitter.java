@@ -29,6 +29,7 @@ class VideoEventEmitter {
     private static final String EVENT_LOAD = "onVideoLoad";
     private static final String EVENT_ERROR = "onVideoError";
     private static final String EVENT_PROGRESS = "onVideoProgress";
+    private static final String EVENT_TIMELINE = "onVideoTimeline";
     private static final String EVENT_SEEK = "onVideoSeek";
     private static final String EVENT_END = "onVideoEnd";
     private static final String EVENT_STALLED = "onPlaybackStalled";
@@ -45,6 +46,7 @@ class VideoEventEmitter {
             EVENT_LOAD,
             EVENT_ERROR,
             EVENT_PROGRESS,
+            EVENT_TIMELINE,
             EVENT_SEEK,
             EVENT_END,
             EVENT_STALLED,
@@ -63,6 +65,7 @@ class VideoEventEmitter {
             EVENT_LOAD,
             EVENT_ERROR,
             EVENT_PROGRESS,
+            EVENT_TIMELINE,
             EVENT_SEEK,
             EVENT_END,
             EVENT_STALLED,
@@ -86,6 +89,7 @@ class VideoEventEmitter {
 
     private static final String EVENT_PROP_DURATION = "duration";
     private static final String EVENT_PROP_PLAYABLE_DURATION = "playableDuration";
+    private static final String EVENT_PROP_TIMELINE = "timeline";
     private static final String EVENT_PROP_CURRENT_TIME = "currentTime";
     private static final String EVENT_PROP_SEEK_TIME = "seekTime";
     private static final String EVENT_PROP_NATURAL_SIZE = "naturalSize";
@@ -142,6 +146,12 @@ class VideoEventEmitter {
         event.putDouble(EVENT_PROP_CURRENT_TIME, currentPosition / 1000D);
         event.putDouble(EVENT_PROP_PLAYABLE_DURATION, bufferedDuration / 1000D);
         receiveEvent(EVENT_PROGRESS, event);
+    }
+
+    void timelineChanged(double duration) {
+        WritableMap event = Arguments.createMap();
+        event.putDouble(EVENT_PROP_TIMELINE, duration / 1000D);
+        receiveEvent(EVENT_TIMELINE, event);
     }
 
     void seek(long currentPosition, long seekTime) {
