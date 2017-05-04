@@ -226,12 +226,12 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
                             });
    }
    if( currentTimeSecs >= 0 && self.onVideoTimelineChange) {
-       self.onVideoTimelineChange(@{
-                              @"timeline": [NSNumber numberWithFloat:CMTimeGetSeconds(playerDuration)],
-                              @"atValue": [NSNumber numberWithLongLong:duration.value],
-                              @"atTimescale": [NSNumber numberWithInt:duration.timescale],
-                              @"target": self.reactTag,
-                              });
+      self.onVideoTimelineChange(@{
+                            @"timeline": [NSNumber numberWithFloat:CMTimeGetSeconds(playerDuration)],
+                            @"atValue": [NSNumber numberWithLongLong:playerDuration.value],
+                            @"atTimescale": [NSNumber numberWithInt:playerDuration.timescale],
+                            @"target": self.reactTag,
+                           });
    }
 
 }
