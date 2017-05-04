@@ -22,6 +22,7 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoBuffer;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoError;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoProgress;
+@property (nonatomic, copy) RCTBubblingEventBlock onVideoTimelineChange;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoSeek;
 @property (nonatomic, copy) RCTBubblingEventBlock onVideoEnd;
 @property (nonatomic, copy) RCTBubblingEventBlock onTimedMetadata;
@@ -35,8 +36,8 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onPlaybackRateChange;
 
 /**
- Airplay connect/disconnect callback. 
- 
+ Airplay connect/disconnect callback.
+
  Payload:
  {
  "externalOutputActive": BOOL,

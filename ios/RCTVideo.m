@@ -225,6 +225,15 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
                              @"seekableDuration": [NSNumber numberWithFloat:CMTimeGetSeconds([self playerItemSeekableTimeRange].duration)],
                             });
    }
+   if( currentTimeSecs >= 0 && self.onVideoTimelineChange) {
+       self.onVideoTimelineChange(@{
+                              @"timeline": [NSNumber numberWithFloat:CMTimeGetSeconds(playerDuration)],
+                              @"atValue": [NSNumber numberWithLongLong:duration.value],
+                              @"atTimescale": [NSNumber numberWithInt:duration.timescale],
+                              @"target": self.reactTag,
+                              });
+   }
+
 }
 
 /*!
@@ -868,7 +877,7 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
         if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay])
             return outputPort.portName;
     }
-    
+
     return @"Unknown Device";
 }
 
