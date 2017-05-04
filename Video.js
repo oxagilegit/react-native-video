@@ -138,6 +138,11 @@ export default class Video extends Component {
       this.props.onExternalOutputChange(event.nativeEvent);
     }
   };
+  _onTimelineChange = event => {
+    if (this.props.onTimelineChange) {
+      this.props.onTimelineChange(event.nativeEvent);
+    }
+  }
   _onPlaybackRateChange = event => {
     if (this.state.showPoster && event.nativeEvent.playbackRate !== 0) {
       this.setState({showPoster: false});
@@ -208,6 +213,7 @@ export default class Video extends Component {
       onVideoLoad: this._onLoad,
       onVideoError: this._onError,
       onVideoProgress: this._onProgress,
+      onVideoTimelineChange: this._onTimelineChange,
       onVideoSeek: this._onSeek,
       onVideoEnd: this._onEnd,
       onVideoBuffer: this._onBuffer,
@@ -257,6 +263,7 @@ Video.propTypes = {
   onVideoBuffer: PropTypes.func,
   onVideoError: PropTypes.func,
   onVideoProgress: PropTypes.func,
+  onVideoTimelineChange: PropTypes.func,
   onVideoSeek: PropTypes.func,
   onVideoEnd: PropTypes.func,
   onTimedMetadata: PropTypes.func,
@@ -291,6 +298,7 @@ Video.propTypes = {
   onBuffer: PropTypes.func,
   onError: PropTypes.func,
   onProgress: PropTypes.func,
+  onTimelineChange: PropTypes.func,
   onSeek: PropTypes.func,
   onEnd: PropTypes.func,
   onFullscreenPlayerWillPresent: PropTypes.func,
