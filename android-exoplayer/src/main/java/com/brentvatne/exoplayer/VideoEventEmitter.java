@@ -29,7 +29,7 @@ class VideoEventEmitter {
     private static final String EVENT_LOAD = "onVideoLoad";
     private static final String EVENT_ERROR = "onVideoError";
     private static final String EVENT_PROGRESS = "onVideoProgress";
-    private static final String EVENT_TIMELINE = "onVideoTimeline";
+    private static final String EVENT_TIMELINE = "onVideoTimelineChange";
     private static final String EVENT_SEEK = "onVideoSeek";
     private static final String EVENT_END = "onVideoEnd";
     private static final String EVENT_STALLED = "onPlaybackStalled";
